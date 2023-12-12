@@ -1,13 +1,11 @@
 'use client';
 
-import './globals.css';
-
-import GlobalStyle from './_styles/Global';
-import { Inter } from 'next/font/google';
-// import type { Metadata } from 'next';
 import React from 'react';
+import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@emotion/react';
+import GlobalStyle from './_styles/Global';
 import theme from './_styles/theme';
+// import type { Metadata } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,7 +16,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <ThemeProvider theme={theme}>
         <GlobalStyle />
         <body className={inter.className}>{children}</body>
