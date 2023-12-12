@@ -1,6 +1,9 @@
 import { Global, css } from '@emotion/react';
+import resetStyle from './resetStyle';
 
 const style = css`
+  ${resetStyle}
+
   html,
   body {
     margin: 0;

@@ -2,12 +2,12 @@
 
 import './globals.css';
 
-import GlobalStyle from './styles/Global';
+import GlobalStyle from './_styles/Global';
 import { Inter } from 'next/font/google';
 // import type { Metadata } from 'next';
 import React from 'react';
 import { ThemeProvider } from '@emotion/react';
-import theme from './styles/theme';
+import theme from './_styles/theme';
 
 const inter = Inter({ subsets: ['latin'] });
 
