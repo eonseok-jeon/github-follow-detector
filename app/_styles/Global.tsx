@@ -9,6 +9,8 @@ const style = css`
     margin: 0;
     padding: 0;
     font-size: 62.5%;
+    color: #fff;
+    background-color: #000;
   }
 `;
 
