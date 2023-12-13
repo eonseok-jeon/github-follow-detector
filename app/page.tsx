@@ -1,11 +1,11 @@
-import styles from './page.module.css';
-
-export default function Home() {
+const Home = () => {
   return (
-    <main className={styles.main}>
+    <main>
       <div>
         <h1>Hello</h1>
       </div>
     </main>
   );
-}
+};
+
+export default Home;
