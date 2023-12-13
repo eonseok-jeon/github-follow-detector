@@ -3,7 +3,6 @@ import styled from '@emotion/styled';
 const CommonButton = styled.button`
   display: inline-block;
   padding: 0.5rem;
-  margin-bottom: 0.5rem;
   border: 1px solid black;
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.lightGrey};

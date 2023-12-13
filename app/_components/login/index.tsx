@@ -14,6 +14,7 @@ const LoginForm = styled.form`
   align-items: center;
   justify-content: center;
   width: 100%;
+  margin-bottom: 1rem;
 `;
 
 const FormInput = styled.input`
@@ -28,9 +29,16 @@ const FormInput = styled.input`
   }
 `;
 
-const warningStyle = css`
+const CheckWithLoginWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: end;
+`;
+
+const textStyle = css`
   font-size: 1.4rem;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
 `;
 
 const Login = () => {
@@ -41,11 +49,15 @@ const Login = () => {
           GitHub Token 만들러 가기
         </a>
       </Button>
-      <p css={warningStyle}>!토큰 발급시 권한 user(Update ALL user data)를 체크해주세요!</p>
+      <p css={textStyle}>!토큰 발급시 권한 user(Update ALL user data)를 체크해주세요!</p>
       <LoginForm>
         <FormInput type="text" placeholder="GitHub Token을 입력해주세요" />
         <Button type="submit">나의 맞팔 확인하기</Button>
       </LoginForm>
+      <CheckWithLoginWrapper>
+        <span css={textStyle}>깃허브 로그인으로 간단하게 확인하기 &rarr;</span>
+        <Button>깃허브 로그인</Button>
+      </CheckWithLoginWrapper>
     </Container>
   );
 };
