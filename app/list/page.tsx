@@ -14,7 +14,7 @@ import FollowerList from './FollowerList';
 const UserInfo = () => {
   return (
     <S.MyInfoContainer>
-      <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={100} height={100} />
+      <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={100} height={100} priority />
       <div css={userInfo}>
         <p>simeunseo</p>
         <p>what rly matters</p>

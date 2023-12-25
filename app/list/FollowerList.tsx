@@ -92,7 +92,7 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
       {DUMMY_DATA.map(({ id, imgSrc, userName }) => (
         <S.FollowerItem key={`${id}-${imgSrc}-${userName}`}>
           <label css={followerInfo} htmlFor={`${id}-${userName}`}>
-            <Image css={userImage} src={imgSrc} alt="user-profile-img" width={50} height={50} />
+            <Image css={userImage} src={imgSrc} alt="user-profile-img" width={50} height={50} priority />
             <span>{userName}</span>
             <S.InputCheckBox
               id={`${id}-${userName}`}
