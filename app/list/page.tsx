@@ -8,7 +8,7 @@ import styled from '@emotion/styled';
 import Button from '@/_components/common/Button';
 import Container from '@/_components/common/Container';
 import { CommonContainer } from '@/_components/common/Container/style';
-import { flexCenter, flexColumn, flexStart } from '@/_styles/reusableStyle';
+import { flexCenter, flexColumn, flexEnd, flexStart } from '@/_styles/reusableStyle';
 import Link from 'next/link';
 
 const ListPage = () => {
@@ -33,11 +33,9 @@ const ListPage = () => {
         </Button>
       </div>
       <Container>
-        <div>
-          <input id="check-all" type="radio" name="select-check-option" />
-          <label htmlFor="check-all">모두 선택</label>
-          <input id="uncheck-all" type="radio" name="select-check-option" />
-          <label htmlFor="uncheck-all">모두 해지</label>
+        <div css={selectRadio}>
+          <InputRadio data-after="모두 선택" id="check-all" type="radio" defaultChecked name="select-check-option" />
+          <InputRadio data-after="모두 해지" id="uncheck-all" type="radio" name="select-check-option" />
         </div>
         <ul>
           <li>
@@ -77,8 +75,36 @@ const followerButton = css`
   font-size: 2rem;
 `;
 
+const selectRadio = css`
+  ${flexEnd}
+  gap: 1rem;
+`;
+
 const ListContainer = styled(CommonContainer)`
   ${flexStart}
 
   gap: 3rem;
+`;
+
+const InputRadio = styled.input`
+  position: relative;
+  width: 7.5rem;
+  padding: 1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:checked {
+    background-color: ${({ theme }) => theme.colors.lightGrey};
+  }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    content: attr(data-after);
+    font-size: 1.5rem;
+  }
 `;
