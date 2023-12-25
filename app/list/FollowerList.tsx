@@ -76,7 +76,7 @@ const SelectRadio = ({ selectedUser, selectAllUsersHandler }: ISelectedRadioType
 
 interface IFollowerDataTypesProps {
   selectedUser: number[];
-  selectUsersHandler: (_userId: number, _action: string) => void;
+  selectUsersHandler: (_isAdded: boolean, _userId: number) => void;
 }
 
 /** follower 목록 보여주는 부분 */
@@ -84,13 +84,7 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
   const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
     const userId = Number((e.target as HTMLInputElement).value);
 
-    // 개별 follower checkbox 선택
-    if (!selectedUser.includes(userId)) {
-      return selectUsersHandler(userId, 'ADD');
-    }
-    if (selectedUser.includes(userId)) {
-      return selectUsersHandler(userId, 'DELETE');
-    }
+    return selectUsersHandler(selectedUser.includes(userId), userId);
   };
 
   return (
@@ -122,10 +116,10 @@ const FollowerList = () => {
     allSelected ? setSelectedUsers([]) : setSelectedUsers(DUMMY_DATA.map(({ id }) => id));
   };
 
-  const selectUserHandler = (userId: number, action: string) => {
-    action === 'ADD'
-      ? setSelectedUsers((prev) => [...prev, userId])
-      : setSelectedUsers(selectedUser.filter((selectedUserId) => selectedUserId !== userId));
+  const selectUserHandler = (isAdded: boolean, userId: number) => {
+    isAdded
+      ? setSelectedUsers(selectedUser.filter((selectedUserId) => selectedUserId !== userId))
+      : setSelectedUsers((prev) => [...prev, userId]);
   };
 
   return (
