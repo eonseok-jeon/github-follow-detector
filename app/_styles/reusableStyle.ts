@@ -23,4 +23,16 @@ const flexAround = css`
   justify-content: space-around;
 `;
 
-export { flexColumn, flexCenter, flexBetween, flexAround };
+const flexStart = css`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+`;
+
+const flexEnd = css`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+export { flexColumn, flexCenter, flexBetween, flexAround, flexStart, flexEnd };

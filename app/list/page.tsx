@@ -3,23 +3,27 @@
 'use client';
 
 import Image from 'next/image';
-import Button from '@/_components/common/Button';
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import Container from '@/_components/common/Container';
+import { CommonContainer } from '@/_components/common/Container/style';
+import { flexColumn, flexStart } from '@/_styles/reusableStyle';
+import Button from '@/_components/common/Button';
 
 const ListPage = () => {
   return (
     <>
-      <Container>
-        <Image src="/egg_princess.png" alt="user-profile-img" width={100} height={100} />
-        <div>
+      <ListContainer>
+        <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={100} height={100} />
+        <div css={userInfo}>
           <p>simeunseo</p>
           <p>what rly matters</p>
-          <div>
+          <div css={followerCounts}>
             <span>팔로워: 51</span>
             <span>팔로잉: 60</span>
           </div>
         </div>
-      </Container>
+      </ListContainer>
       <Button>맞팔 아닌 사람</Button>
       <Button>맞팔 확인하기</Button>
       <Container>
@@ -31,7 +35,7 @@ const ListPage = () => {
         </div>
         <ul>
           <li>
-            <Image src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
+            <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
             <label htmlFor="github-id">easlaw80</label>
             <input id="github-id" type="checkbox" />
           </li>
@@ -42,3 +46,25 @@ const ListPage = () => {
 };
 
 export default ListPage;
+
+const userImage = css`
+  border-radius: 50%;
+`;
+
+const userInfo = css`
+  ${flexColumn}
+
+  gap: 0.5rem;
+`;
+
+const followerCounts = css`
+  ${flexStart}
+
+  gap: 3rem;
+`;
+
+const ListContainer = styled(CommonContainer)`
+  ${flexStart}
+
+  gap: 3rem;
+`;
