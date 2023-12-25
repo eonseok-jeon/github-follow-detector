@@ -37,12 +37,28 @@ const ListPage = () => {
           <InputRadio data-after="모두 선택" id="check-all" type="radio" defaultChecked name="select-check-option" />
           <InputRadio data-after="모두 해지" id="uncheck-all" type="radio" name="select-check-option" />
         </div>
-        <ul>
-          <li>
-            <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
-            <label htmlFor="github-id">easlaw80</label>
-            <input id="github-id" type="checkbox" />
-          </li>
+        <ul css={followerList}>
+          <FollowerItem>
+            <label css={followerInfo} htmlFor="follower1">
+              <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
+              <span>easlaw80</span>
+              <InputCheckBox id="follower1" type="checkbox" />
+            </label>
+          </FollowerItem>
+          <FollowerItem>
+            <label css={followerInfo} htmlFor="follower2">
+              <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
+              <span>easlaw80</span>
+              <InputCheckBox id="follower2" type="checkbox" />
+            </label>
+          </FollowerItem>
+          <FollowerItem>
+            <label css={followerInfo} htmlFor="follower3">
+              <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
+              <span>easlaw80</span>
+              <InputCheckBox id="follower3" type="checkbox" />
+            </label>
+          </FollowerItem>
         </ul>
       </Container>
     </>
@@ -50,6 +66,30 @@ const ListPage = () => {
 };
 
 export default ListPage;
+
+const followerList = css`
+  ${flexColumn}
+
+  gap: 3rem;
+`;
+
+const FollowerItem = styled.li`
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.grey};
+  }
+`;
+
+const followerInfo = css`
+  ${flexStart}
+
+  gap: 2rem;
+  padding: 2rem;
+`;
 
 const userImage = css`
   border-radius: 50%;
@@ -77,7 +117,9 @@ const followerButton = css`
 
 const selectRadio = css`
   ${flexEnd}
+
   gap: 1rem;
+  margin-bottom: 2rem;
 `;
 
 const ListContainer = styled(CommonContainer)`
@@ -92,6 +134,30 @@ const InputRadio = styled.input`
   padding: 1rem;
   border: 1px solid black;
   border-radius: 5px;
+  cursor: pointer;
+
+  &:checked {
+    background-color: ${({ theme }) => theme.colors.lightGrey};
+  }
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    content: attr(data-after);
+    font-size: 1.5rem;
+  }
+`;
+
+const InputCheckBox = styled.input`
+  position: relative;
+  width: 2rem;
+  padding: 1rem;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin-left: auto;
   cursor: pointer;
 
   &:checked {
