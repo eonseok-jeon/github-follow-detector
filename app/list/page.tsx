@@ -7,9 +7,46 @@ import Image from 'next/image';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import Button from '@/_components/common/Button';
-import Container from '@/_components/common/Container';
 import { CommonContainer } from '@/_components/common/Container/style';
 import { flexCenter, flexColumn, flexEnd, flexStart } from '@/_styles/reusableStyle';
+
+const DUMMY_DATA = [
+  {
+    id: 1,
+    imgSrc: '/egg_princess.png',
+    userName: 'easlaw80',
+  },
+  {
+    id: 2,
+    imgSrc: '/egg_princess.png',
+    userName: 'easlaw80',
+  },
+  {
+    id: 3,
+    imgSrc: '/egg_princess.png',
+    userName: 'easlaw80',
+  },
+  {
+    id: 4,
+    imgSrc: '/egg_princess.png',
+    userName: 'easlaw80',
+  },
+  {
+    id: 5,
+    imgSrc: '/egg_princess.png',
+    userName: 'easlaw80',
+  },
+  {
+    id: 6,
+    imgSrc: '/egg_princess.png',
+    userName: 'easlaw80',
+  },
+  {
+    id: 7,
+    imgSrc: '/egg_princess.png',
+    userName: 'easlaw80',
+  },
+];
 
 const ListPage = () => {
   return (
@@ -38,48 +75,15 @@ const ListPage = () => {
           <InputRadio data-after="모두 해지" id="uncheck-all" type="radio" name="select-check-option" />
         </div>
         <ul css={followerList}>
-          <FollowerItem>
-            <label css={followerInfo} htmlFor="follower1">
-              <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
-              <span>easlaw80</span>
-              <InputCheckBox id="follower1" type="checkbox" />
-            </label>
-          </FollowerItem>
-          <FollowerItem>
-            <label css={followerInfo} htmlFor="follower2">
-              <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
-              <span>easlaw80</span>
-              <InputCheckBox id="follower2" type="checkbox" />
-            </label>
-          </FollowerItem>
-          <FollowerItem>
-            <label css={followerInfo} htmlFor="follower2">
-              <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
-              <span>easlaw80</span>
-              <InputCheckBox id="follower2" type="checkbox" />
-            </label>
-          </FollowerItem>
-          <FollowerItem>
-            <label css={followerInfo} htmlFor="follower2">
-              <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
-              <span>easlaw80</span>
-              <InputCheckBox id="follower2" type="checkbox" />
-            </label>
-          </FollowerItem>
-          <FollowerItem>
-            <label css={followerInfo} htmlFor="follower2">
-              <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
-              <span>easlaw80</span>
-              <InputCheckBox id="follower2" type="checkbox" />
-            </label>
-          </FollowerItem>
-          <FollowerItem>
-            <label css={followerInfo} htmlFor="follower3">
-              <Image css={userImage} src="/egg_princess.png" alt="user-profile-img" width={50} height={50} />
-              <span>easlaw80</span>
-              <InputCheckBox id="follower3" type="checkbox" />
-            </label>
-          </FollowerItem>
+          {DUMMY_DATA.map(({ id, imgSrc, userName }) => (
+            <FollowerItem key={`${id}-${imgSrc}-${userName}`}>
+              <label css={followerInfo} htmlFor={`${id}-${userName}`}>
+                <Image css={userImage} src={imgSrc} alt="user-profile-img" width={50} height={50} />
+                <span>{userName}</span>
+                <InputCheckBox id={`${id}-${userName}`} type="checkbox" />
+              </label>
+            </FollowerItem>
+          ))}
         </ul>
       </ListContainer>
     </>
