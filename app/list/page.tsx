@@ -10,6 +10,7 @@ import { flexCenter, flexColumn, flexStart } from '@/_styles/reusableStyle';
 import * as S from './style';
 import FollowerList from './FollowerList';
 
+/** 내 정보 부분 */
 const UserInfo = () => {
   return (
     <S.MyInfoContainer>
@@ -26,6 +27,7 @@ const UserInfo = () => {
   );
 };
 
+/** 맞팔 아닌 사람 / 맞팔 확인하기 / 뒤로 가기 버튼 부분 */
 const ListButtons = () => {
   return (
     <div css={followerButton}>
@@ -38,6 +40,7 @@ const ListButtons = () => {
   );
 };
 
+/** list page */
 const ListPage = () => {
   return (
     <>

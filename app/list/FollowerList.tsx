@@ -43,6 +43,7 @@ const DUMMY_DATA = [
   },
 ];
 
+/** 모두 선택 / 모두 해지 선택하는 radio 부분 */
 const SelectRadio = () => {
   return (
     <div css={selectRadio}>
@@ -52,6 +53,7 @@ const SelectRadio = () => {
   );
 };
 
+/** follower 목록 보여주는 부분 */
 const FollowerData = () => {
   return (
     <ul css={followerList}>
