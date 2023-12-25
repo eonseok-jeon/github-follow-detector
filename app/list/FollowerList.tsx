@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
+import { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import { css } from '@emotion/react';
-import { flexColumn, flexEnd, flexStart } from '@/_styles/reusableStyle';
+import { flexColumn, flexStart } from '@/_styles/reusableStyle';
 import * as S from './style';
-import { FormEvent, useState } from 'react';
 
 const DUMMY_DATA = [
   {
@@ -44,13 +44,24 @@ const DUMMY_DATA = [
   },
 ];
 
+interface ISelectedRadioTypesProps {
+  selectedUser: number[];
+  selectAllUsersHandler: (allSelected: boolean) => void;
+}
+
 /** 모두 선택 / 모두 해지 선택하는 radio 부분 */
-const SelectRadio = () => {
+const SelectRadio = ({ selectedUser, selectAllUsersHandler }: ISelectedRadioTypesProps) => {
+  const allSelected = selectedUser.length === DUMMY_DATA.length;
+
   return (
-    <div css={selectRadio}>
-      <S.InputRadio data-after="모두 선택" id="check-all" type="radio" defaultChecked name="select-check-option" />
-      <S.InputRadio data-after="모두 해지" id="uncheck-all" type="radio" name="select-check-option" />
-    </div>
+    <S.SelectAllButton
+      type="button"
+      onClick={() => {
+        selectAllUsersHandler(allSelected);
+      }}
+    >
+      {allSelected ? '모두 해제' : '모두 선택'}
+    </S.SelectAllButton>
   );
 };
 
@@ -62,7 +73,7 @@ interface IFollowerDataTypesProps {
 /** follower 목록 보여주는 부분 */
 const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesProps) => {
   const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
-    const userId = Number(e.target.value);
+    const userId = Number((e.target as HTMLInputElement).value);
 
     if (!selectedUser.includes(userId)) {
       return selectUsersHandler(userId, 'ADD');
@@ -96,31 +107,25 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
 const FollowerList = () => {
   const [selectedUser, setSelectedUsers] = useState<number[]>([]);
 
+  const selectAllUsersHandler = (allSelected: boolean) => {
+    allSelected ? setSelectedUsers([]) : setSelectedUsers(DUMMY_DATA.map(({ id }) => id));
+  };
+
   const selectUserHandler = (userId: number, action: string) => {
-    if (action === 'ADD') {
-      return setSelectedUsers((prev) => [...prev, userId]);
-    }
-    if (action === 'DELETE') {
-      return setSelectedUsers(selectedUser.filter((selectedUserId) => selectedUserId !== userId));
-    }
+    action === 'ADD'
+      ? setSelectedUsers((prev) => [...prev, userId])
+      : setSelectedUsers(selectedUser.filter((selectedUserId) => selectedUserId !== userId));
   };
 
   return (
     <S.ListContainer>
-      <SelectRadio />
+      <SelectRadio selectedUser={selectedUser} selectAllUsersHandler={selectAllUsersHandler} />
       <FollowerData selectedUser={selectedUser} selectUsersHandler={selectUserHandler} />
     </S.ListContainer>
   );
 };
 
 export default FollowerList;
-
-const selectRadio = css`
-  ${flexEnd}
-
-  gap: 1rem;
-  margin-bottom: 2rem;
-`;
 
 const followerList = css`
   ${flexColumn}
