@@ -46,7 +46,16 @@ const DUMMY_DATA = [
 
 interface ISelectedRadioTypesProps {
   selectedUser: number[];
-  selectAllUsersHandler: (allSelected: boolean) => void;
+  /**
+   * _allSelected 앞에 __를 붙인 이유:
+   * allSelected 라고 했더니
+   * allSelected is defined but never used
+   * 라는 에러가 떠서
+   * eslint.json에
+   * "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }] 추가한 뒤
+   * _allSelected로 변경함
+   */
+  selectAllUsersHandler: (_allSelected: boolean) => void;
 }
 
 /** 모두 선택 / 모두 해지 선택하는 radio 부분 */
@@ -67,7 +76,7 @@ const SelectRadio = ({ selectedUser, selectAllUsersHandler }: ISelectedRadioType
 
 interface IFollowerDataTypesProps {
   selectedUser: number[];
-  selectUsersHandler: (userId: number, action: string) => void;
+  selectUsersHandler: (_userId: number, _action: string) => void;
 }
 
 /** follower 목록 보여주는 부분 */
@@ -75,6 +84,7 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
   const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
     const userId = Number((e.target as HTMLInputElement).value);
 
+    // 개별 follower checkbox 선택
     if (!selectedUser.includes(userId)) {
       return selectUsersHandler(userId, 'ADD');
     }
@@ -107,6 +117,7 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
 const FollowerList = () => {
   const [selectedUser, setSelectedUsers] = useState<number[]>([]);
 
+  /** 전체 선택 / 전체 해제 */
   const selectAllUsersHandler = (allSelected: boolean) => {
     allSelected ? setSelectedUsers([]) : setSelectedUsers(DUMMY_DATA.map(({ id }) => id));
   };
