@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { css } from '@emotion/react';
 import { flexColumn, flexEnd, flexStart } from '@/_styles/reusableStyle';
 import * as S from './style';
+import { FormEvent, useState } from 'react';
 
 const DUMMY_DATA = [
   {
@@ -53,8 +54,24 @@ const SelectRadio = () => {
   );
 };
 
+interface IFollowerDataTypesProps {
+  selectedUser: number[];
+  selectUsersHandler: (userId: number, action: string) => void;
+}
+
 /** follower 목록 보여주는 부분 */
-const FollowerData = () => {
+const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesProps) => {
+  const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
+    const userId = Number(e.target.value);
+
+    if (!selectedUser.includes(userId)) {
+      return selectUsersHandler(userId, 'ADD');
+    }
+    if (selectedUser.includes(userId)) {
+      return selectUsersHandler(userId, 'DELETE');
+    }
+  };
+
   return (
     <ul css={followerList}>
       {DUMMY_DATA.map(({ id, imgSrc, userName }) => (
@@ -62,7 +79,13 @@ const FollowerData = () => {
           <label css={followerInfo} htmlFor={`${id}-${userName}`}>
             <Image css={userImage} src={imgSrc} alt="user-profile-img" width={50} height={50} />
             <span>{userName}</span>
-            <S.InputCheckBox id={`${id}-${userName}`} type="checkbox" />
+            <S.InputCheckBox
+              id={`${id}-${userName}`}
+              type="checkbox"
+              value={id}
+              checked={selectedUser.includes(id)}
+              onChange={selectUserHandler}
+            />
           </label>
         </S.FollowerItem>
       ))}
@@ -71,10 +94,21 @@ const FollowerData = () => {
 };
 
 const FollowerList = () => {
+  const [selectedUser, setSelectedUsers] = useState<number[]>([]);
+
+  const selectUserHandler = (userId: number, action: string) => {
+    if (action === 'ADD') {
+      return setSelectedUsers((prev) => [...prev, userId]);
+    }
+    if (action === 'DELETE') {
+      return setSelectedUsers(selectedUser.filter((selectedUserId) => selectedUserId !== userId));
+    }
+  };
+
   return (
     <S.ListContainer>
       <SelectRadio />
-      <FollowerData />
+      <FollowerData selectedUser={selectedUser} selectUsersHandler={selectUserHandler} />
     </S.ListContainer>
   );
 };
