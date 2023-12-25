@@ -2,6 +2,8 @@
 
 'use client';
 
+import { FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 import { css } from '@emotion/react';
 import Button from '../common/Button';
 import * as S from './style';
@@ -38,8 +40,15 @@ const MakeGitHubToken = () => {
 
 /** 나의 맞팔 확인하기 Form */
 const LoginForm = () => {
+  const router = useRouter();
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    router.push('/list');
+  };
+
   return (
-    <S.LoginFormWrapper>
+    <S.LoginFormWrapper onSubmit={handleSubmit}>
       <S.FormInput type="text" placeholder="GitHub Token을 입력해주세요" />
       <Button type="submit">나의 맞팔 확인하기</Button>
     </S.LoginFormWrapper>
