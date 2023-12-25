@@ -8,25 +8,6 @@ import { css } from '@emotion/react';
 import Button from '../common/Button';
 import * as S from './style';
 
-/** 시작 화면 - Token 입력창 */
-const Login = () => {
-  return (
-    <S.LoginContainer>
-      <MakeGitHubToken />
-      <p css={textStyle}>!토큰 발급시 권한 user(Update ALL user data)를 체크해주세요!</p>
-      <LoginForm />
-      <CheckWithLogin />
-    </S.LoginContainer>
-  );
-};
-
-export default Login;
-
-const textStyle = css`
-  font-size: 1.4rem;
-  margin: 0.5rem 0;
-`;
-
 /** GitHub Token 만들러 가기 버튼 */
 const MakeGitHubToken = () => {
   return (
@@ -64,3 +45,22 @@ const CheckWithLogin = () => {
     </S.CheckWithLoginWrapper>
   );
 };
+
+/** 시작 화면 - Token 입력창 */
+const Login = () => {
+  return (
+    <S.LoginContainer>
+      <MakeGitHubToken />
+      <p css={textStyle}>!토큰 발급시 권한 user(Update ALL user data)를 체크해주세요!</p>
+      <LoginForm />
+      <CheckWithLogin />
+    </S.LoginContainer>
+  );
+};
+
+export default Login;
+
+const textStyle = css`
+  font-size: 1.4rem;
+  margin: 0.5rem 0;
+`;
