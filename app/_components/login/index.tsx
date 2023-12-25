@@ -4,18 +4,17 @@
 
 import { css } from '@emotion/react';
 import Button from '../common/Button';
-import Container from '../common/Container';
 import * as S from './style';
 
 /** 시작 화면 - Token 입력창 */
 const Login = () => {
   return (
-    <Container>
+    <S.LoginContainer>
       <MakeGitHubToken />
       <p css={textStyle}>!토큰 발급시 권한 user(Update ALL user data)를 체크해주세요!</p>
       <LoginForm />
       <CheckWithLogin />
-    </Container>
+    </S.LoginContainer>
   );
 };
 
