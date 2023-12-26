@@ -1,4 +1,10 @@
 import styled from '@emotion/styled';
+import { CommonContainer } from '../common/Container/style';
+
+const LoginContainer = styled(CommonContainer)`
+  margin-top: 50vh;
+  transform: translateY(-50%);
+`;
 
 const LoginFormWrapper = styled.form`
   display: flex;
@@ -29,4 +35,4 @@ const CheckWithLoginWrapper = styled.div`
   justify-content: end;
 `;
 
-export { LoginFormWrapper, FormInput, CheckWithLoginWrapper };
+export { LoginContainer, LoginFormWrapper, FormInput, CheckWithLoginWrapper };
