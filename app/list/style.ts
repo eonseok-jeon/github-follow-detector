@@ -9,26 +9,19 @@ const MyInfoContainer = styled(CommonContainer)`
   margin-top: 3rem;
 `;
 
-const InputRadio = styled.input`
+const SelectAllButton = styled.button`
   position: relative;
-  width: 7.5rem;
-  padding: 1rem;
+  display: block;
+  padding: 0.5rem;
+  margin-left: auto;
+  margin-bottom: 2rem;
   border: 1px solid black;
   border-radius: 5px;
   cursor: pointer;
+  transition: all 0.3s ease;
 
-  &:checked {
+  &:hover {
     background-color: ${({ theme }) => theme.colors.lightGrey};
-  }
-
-  &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    content: attr(data-after);
-    font-size: 1.5rem;
   }
 `;
 
@@ -79,4 +72,4 @@ const FollowerItem = styled.li`
   }
 `;
 
-export { MyInfoContainer, InputRadio, InputCheckBox, ListContainer, FollowerItem };
+export { MyInfoContainer, SelectAllButton, InputCheckBox, ListContainer, FollowerItem };

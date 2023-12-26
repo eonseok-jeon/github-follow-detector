@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
+import { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import { css } from '@emotion/react';
-import { flexColumn, flexEnd, flexStart } from '@/_styles/reusableStyle';
+import { flexColumn, flexStart } from '@/_styles/reusableStyle';
 import * as S from './style';
 
 const DUMMY_DATA = [
@@ -43,26 +44,63 @@ const DUMMY_DATA = [
   },
 ];
 
+interface ISelectedRadioTypesProps {
+  selectedUser: number[];
+  /**
+   * _allSelected 앞에 __를 붙인 이유:
+   * allSelected 라고 했더니
+   * allSelected is defined but never used
+   * 라는 에러가 떠서
+   * eslint.json에
+   * "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }] 추가한 뒤
+   * _allSelected로 변경함
+   */
+  selectAllUsersHandler: (_allSelected: boolean) => void;
+}
+
 /** 모두 선택 / 모두 해지 선택하는 radio 부분 */
-const SelectRadio = () => {
+const SelectRadio = ({ selectedUser, selectAllUsersHandler }: ISelectedRadioTypesProps) => {
+  const allSelected = selectedUser.length === DUMMY_DATA.length;
+
   return (
-    <div css={selectRadio}>
-      <S.InputRadio data-after="모두 선택" id="check-all" type="radio" defaultChecked name="select-check-option" />
-      <S.InputRadio data-after="모두 해지" id="uncheck-all" type="radio" name="select-check-option" />
-    </div>
+    <S.SelectAllButton
+      type="button"
+      onClick={() => {
+        selectAllUsersHandler(allSelected);
+      }}
+    >
+      {allSelected ? '모두 해제' : '모두 선택'}
+    </S.SelectAllButton>
   );
 };
 
+interface IFollowerDataTypesProps {
+  selectedUser: number[];
+  selectUsersHandler: (_isAdded: boolean, _userId: number) => void;
+}
+
 /** follower 목록 보여주는 부분 */
-const FollowerData = () => {
+const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesProps) => {
+  const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
+    const userId = Number((e.target as HTMLInputElement).value);
+
+    return selectUsersHandler(selectedUser.includes(userId), userId);
+  };
+
   return (
     <ul css={followerList}>
       {DUMMY_DATA.map(({ id, imgSrc, userName }) => (
         <S.FollowerItem key={`${id}-${imgSrc}-${userName}`}>
           <label css={followerInfo} htmlFor={`${id}-${userName}`}>
-            <Image css={userImage} src={imgSrc} alt="user-profile-img" width={50} height={50} />
+            <Image css={userImage} src={imgSrc} alt="user-profile-img" width={50} height={50} priority />
             <span>{userName}</span>
-            <S.InputCheckBox id={`${id}-${userName}`} type="checkbox" />
+            <S.InputCheckBox
+              id={`${id}-${userName}`}
+              type="checkbox"
+              value={id}
+              checked={selectedUser.includes(id)}
+              onChange={selectUserHandler}
+            />
           </label>
         </S.FollowerItem>
       ))}
@@ -71,22 +109,28 @@ const FollowerData = () => {
 };
 
 const FollowerList = () => {
+  const [selectedUser, setSelectedUsers] = useState<number[]>([]);
+
+  /** 전체 선택 / 전체 해제 */
+  const selectAllUsersHandler = (allSelected: boolean) => {
+    allSelected ? setSelectedUsers([]) : setSelectedUsers(DUMMY_DATA.map(({ id }) => id));
+  };
+
+  const selectUserHandler = (isAdded: boolean, userId: number) => {
+    isAdded
+      ? setSelectedUsers(selectedUser.filter((selectedUserId) => selectedUserId !== userId))
+      : setSelectedUsers((prev) => [...prev, userId]);
+  };
+
   return (
     <S.ListContainer>
-      <SelectRadio />
-      <FollowerData />
+      <SelectRadio selectedUser={selectedUser} selectAllUsersHandler={selectAllUsersHandler} />
+      <FollowerData selectedUser={selectedUser} selectUsersHandler={selectUserHandler} />
     </S.ListContainer>
   );
 };
 
 export default FollowerList;
-
-const selectRadio = css`
-  ${flexEnd}
-
-  gap: 1rem;
-  margin-bottom: 2rem;
-`;
 
 const followerList = css`
   ${flexColumn}
