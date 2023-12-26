@@ -4,6 +4,7 @@
 
 import * as S from './style';
 
+import { Dispatch, SetStateAction, useState } from 'react';
 import { flexCenter, flexColumn, flexStart } from '@/_styles/reusableStyle';
 
 import Button from '@/_components/common/Button';
@@ -29,12 +30,16 @@ const UserInfo = () => {
   );
 };
 
+type ListType = 'coFollowList' | 'nonFollowList';
+interface ListTypeInterfaces {
+  setListType: Dispatch<SetStateAction<ListType>>;
+}
 /** 맞팔 아닌 사람 / 맞팔 확인하기 / 뒤로 가기 버튼 부분 */
-const ListButtons = () => {
+const ListButtons = ({ setListType }: ListTypeInterfaces) => {
   return (
     <div css={followerButton}>
-      <Button>맞팔 아닌 사람</Button>
-      <Button>맞팔 확인하기</Button>
+      <Button onClick={() => setListType('nonFollowList')}>맞팔 아닌 사람</Button>
+      <Button onClick={() => setListType('coFollowList')}>맞팔 확인하기</Button>
       <Button>
         <Link href="/">뒤로 가기</Link>
       </Button>
@@ -44,11 +49,12 @@ const ListButtons = () => {
 
 /** list page */
 const ListPage = () => {
+  const [listType, setListType] = useState<ListType>('coFollowList');
   return (
     <>
       <UserInfo />
-      <ListButtons />
-      <FollowerList />
+      <ListButtons setListType={setListType}></ListButtons>
+      <FollowerList listType={listType}></FollowerList>
     </>
   );
 };

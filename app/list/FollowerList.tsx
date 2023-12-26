@@ -7,8 +7,7 @@ import { flexColumn, flexStart } from '@/_styles/reusableStyle';
 
 import Image from 'next/image';
 import { css } from '@emotion/react';
-import { getFollower } from 'apis/getFollower';
-import { useQuery } from '@tanstack/react-query';
+import useGetCoFollower from 'hooks/useCoFollower';
 import { useSearchParams } from 'next/navigation';
 
 const DUMMY_DATA = [
@@ -62,27 +61,11 @@ interface ISelectedRadioTypesProps {
    */
   selectAllUsersHandler: (_allSelected: boolean) => void;
 }
-
 interface UserInfo {
   avatar_url: string;
-  events_url: string;
-  followers_url: string;
-  following_url: string;
-  gists_url: string;
-  gravatar_id: string;
-  html_url: string;
-  id: number;
   login: string;
-  node_id: string;
-  organizations_url: string;
-  received_events_url: string;
-  repos_url: string;
-  site_admin: boolean;
-  starred_url: string;
-  subscriptions_url: string;
-  type: string;
-  url: string;
 }
+
 /** 모두 선택 / 모두 해지 선택하는 radio 부분 */
 const SelectRadio = ({ selectedUser, selectAllUsersHandler }: ISelectedRadioTypesProps) => {
   const allSelected = selectedUser.length === DUMMY_DATA.length;
@@ -98,14 +81,20 @@ const SelectRadio = ({ selectedUser, selectAllUsersHandler }: ISelectedRadioType
     </S.SelectAllButton>
   );
 };
+type ListType = 'coFollowList' | 'nonFollowList' | '';
+
+interface FollowListPropTypes {
+  listType: ListType;
+}
 
 interface IFollowerDataTypesProps {
   selectedUser: number[];
   selectUsersHandler: (_isAdded: boolean, _userId: number) => void;
+  listType: ListType;
 }
 
 /** follower 목록 보여주는 부분 */
-const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesProps) => {
+const FollowerData = ({ selectedUser, selectUsersHandler, listType }: IFollowerDataTypesProps) => {
   // const key: string = sessionStorage.getItem('token') ?? '';
   // const username: string = sessionStorage.getItem('username') ?? '';
   const searchParams = useSearchParams();
@@ -113,11 +102,7 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
   const key = searchParams.get('token') ?? '';
   const username = searchParams.get('username') ?? '';
 
-  const query = useQuery({
-    queryKey: ['followList'],
-    queryFn: () => getFollower(key, username),
-  });
-  console.log(query?.data?.length);
+  const list = useGetCoFollower(key, username, listType);
 
   const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
     const userId = Number((e.target as HTMLInputElement).value);
@@ -127,16 +112,16 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
 
   return (
     <ul css={followerList}>
-      {query?.data?.map((user: UserInfo, index: number) => (
+      {list?.map((user: UserInfo, index: number) => (
         <S.FollowerItem key={index}>
-          <label css={followerInfo} htmlFor={`${user.id}`}>
+          <label css={followerInfo} htmlFor={`${user.login}`}>
             <Image css={userImage} src={user.avatar_url} alt="user-profile-img" width={50} height={50} priority />
             <span>{user.login}</span>
             <S.InputCheckBox
-              id={`${user.id}`}
+              id={`${user.login}`}
               type="checkbox"
-              value={`${user.id}`}
-              checked={selectedUser.includes(user.id)}
+              value={`${user.login}`}
+              // checked={selectedUser.includes(user.login)}
               onChange={selectUserHandler}
             />
           </label>
@@ -146,7 +131,7 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
   );
 };
 
-const FollowerList = () => {
+const FollowerList = ({ listType }: FollowListPropTypes) => {
   const [selectedUser, setSelectedUsers] = useState<number[]>([]);
 
   /** 전체 선택 / 전체 해제 */
@@ -163,7 +148,7 @@ const FollowerList = () => {
   return (
     <S.ListContainer>
       <SelectRadio selectedUser={selectedUser} selectAllUsersHandler={selectAllUsersHandler} />
-      <FollowerData selectedUser={selectedUser} selectUsersHandler={selectUserHandler} />
+      <FollowerData selectedUser={selectedUser} selectUsersHandler={selectUserHandler} listType={listType} />
     </S.ListContainer>
   );
 };
