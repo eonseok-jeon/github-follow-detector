@@ -1,5 +1,6 @@
-import React, { PropsWithChildren } from 'react';
 import * as S from './style';
+
+import React, { PropsWithChildren } from 'react';
 
 interface ButtonPropsTypes {
   type?: 'button' | 'submit' | 'reset' | undefined;

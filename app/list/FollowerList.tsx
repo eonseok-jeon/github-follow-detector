@@ -1,10 +1,14 @@
 /** @jsxImportSource @emotion/react */
 
+import * as S from './style';
+
 import { FormEvent, useState } from 'react';
+import { flexColumn, flexStart } from '@/_styles/reusableStyle';
+
 import Image from 'next/image';
 import { css } from '@emotion/react';
-import { flexColumn, flexStart } from '@/_styles/reusableStyle';
-import * as S from './style';
+import { getFollower } from 'apis/getFollower';
+import { useQuery } from '@tanstack/react-query';
 
 const DUMMY_DATA = [
   {
@@ -58,6 +62,26 @@ interface ISelectedRadioTypesProps {
   selectAllUsersHandler: (_allSelected: boolean) => void;
 }
 
+interface UserInfo {
+  avatar_url: string;
+  events_url: string;
+  followers_url: string;
+  following_url: string;
+  gists_url: string;
+  gravatar_id: string;
+  html_url: string;
+  id: number;
+  login: string;
+  node_id: string;
+  organizations_url: string;
+  received_events_url: string;
+  repos_url: string;
+  site_admin: boolean;
+  starred_url: string;
+  subscriptions_url: string;
+  type: string;
+  url: string;
+}
 /** 모두 선택 / 모두 해지 선택하는 radio 부분 */
 const SelectRadio = ({ selectedUser, selectAllUsersHandler }: ISelectedRadioTypesProps) => {
   const allSelected = selectedUser.length === DUMMY_DATA.length;
@@ -81,6 +105,11 @@ interface IFollowerDataTypesProps {
 
 /** follower 목록 보여주는 부분 */
 const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesProps) => {
+  const query = useQuery({
+    queryKey: ['followList'],
+    queryFn: () => getFollower('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', 'ljh0608'),
+  });
+  console.log(query);
   const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
     const userId = Number((e.target as HTMLInputElement).value);
 
@@ -89,16 +118,16 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
 
   return (
     <ul css={followerList}>
-      {DUMMY_DATA.map(({ id, imgSrc, userName }) => (
-        <S.FollowerItem key={`${id}-${imgSrc}-${userName}`}>
-          <label css={followerInfo} htmlFor={`${id}-${userName}`}>
-            <Image css={userImage} src={imgSrc} alt="user-profile-img" width={50} height={50} priority />
-            <span>{userName}</span>
+      {query?.data?.map((user: UserInfo, index: number) => (
+        <S.FollowerItem key={index}>
+          <label css={followerInfo} htmlFor={`${user.id}`}>
+            <Image css={userImage} src={user.avatar_url} alt="user-profile-img" width={50} height={50} priority />
+            <span>{user.login}</span>
             <S.InputCheckBox
-              id={`${id}-${userName}`}
+              id={`${user.id}`}
               type="checkbox"
-              value={id}
-              checked={selectedUser.includes(id)}
+              value={`${user.id}`}
+              checked={selectedUser.includes(user.id)}
               onChange={selectUserHandler}
             />
           </label>

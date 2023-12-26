@@ -2,13 +2,15 @@
 
 'use client';
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { css } from '@emotion/react';
-import Button from '@/_components/common/Button';
-import { flexCenter, flexColumn, flexStart } from '@/_styles/reusableStyle';
 import * as S from './style';
+
+import { flexCenter, flexColumn, flexStart } from '@/_styles/reusableStyle';
+
+import Button from '@/_components/common/Button';
 import FollowerList from './FollowerList';
+import Image from 'next/image';
+import Link from 'next/link';
+import { css } from '@emotion/react';
 
 /** 내 정보 부분 */
 const UserInfo = () => {
