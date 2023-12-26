@@ -105,9 +105,11 @@ interface IFollowerDataTypesProps {
 
 /** follower 목록 보여주는 부분 */
 const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesProps) => {
+  const key: string = sessionStorage.getItem('token') ?? '';
+  const username: string = sessionStorage.getItem('username') ?? '';
   const query = useQuery({
     queryKey: ['followList'],
-    queryFn: () => getFollower('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', 'ljh0608'),
+    queryFn: () => getFollower(key, username),
   });
   console.log(query);
   const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
