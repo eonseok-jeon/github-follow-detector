@@ -4,10 +4,11 @@
 
 import * as S from './style';
 
+import { usePathname, useRouter } from 'next/navigation';
+
 import Button from '../common/Button';
 import { FormEvent } from 'react';
 import { css } from '@emotion/react';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 /** GitHub Token 만들러 가기 버튼 */
@@ -29,9 +30,7 @@ const LoginForm = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    sessionStorage.setItem('token', token);
-    sessionStorage.setItem('username', username);
-    router.push('/list');
+    router.push('/list?token=' + token + '&username=' + username);
   };
 
   return (

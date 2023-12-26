@@ -9,6 +9,7 @@ import Image from 'next/image';
 import { css } from '@emotion/react';
 import { getFollower } from 'apis/getFollower';
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 
 const DUMMY_DATA = [
   {
@@ -105,13 +106,18 @@ interface IFollowerDataTypesProps {
 
 /** follower 목록 보여주는 부분 */
 const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesProps) => {
-  const key: string = sessionStorage.getItem('token') ?? '';
-  const username: string = sessionStorage.getItem('username') ?? '';
+  // const key: string = sessionStorage.getItem('token') ?? '';
+  // const username: string = sessionStorage.getItem('username') ?? '';
+  const searchParams = useSearchParams();
+
+  const key = searchParams.get('token') ?? '';
+  const username = searchParams.get('username') ?? '';
+
   const query = useQuery({
     queryKey: ['followList'],
     queryFn: () => getFollower(key, username),
   });
-  console.log(query);
+
   const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
     const userId = Number((e.target as HTMLInputElement).value);
 
