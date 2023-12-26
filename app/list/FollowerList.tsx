@@ -117,6 +117,7 @@ const FollowerData = ({ selectedUser, selectUsersHandler }: IFollowerDataTypesPr
     queryKey: ['followList'],
     queryFn: () => getFollower(key, username),
   });
+  console.log(query?.data?.length);
 
   const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
     const userId = Number((e.target as HTMLInputElement).value);
