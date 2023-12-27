@@ -3,54 +3,16 @@
 import * as S from './style';
 
 import { FormEvent, useState } from 'react';
-import { flexBetween, flexColumn, flexStart } from '@/_styles/reusableStyle';
-
 import Image from 'next/image';
 import { css } from '@emotion/react';
 import useGetCoFollower from 'hooks/useCoFollower';
 import { useSearchParams } from 'next/navigation';
 import Button from '@/_components/common/Button';
-
-const DUMMY_DATA = [
-  {
-    id: 1,
-    imgSrc: '/egg_princess.png',
-    userName: 'easlaw80',
-  },
-  {
-    id: 2,
-    imgSrc: '/egg_princess.png',
-    userName: 'easlaw80',
-  },
-  {
-    id: 3,
-    imgSrc: '/egg_princess.png',
-    userName: 'easlaw80',
-  },
-  {
-    id: 4,
-    imgSrc: '/egg_princess.png',
-    userName: 'easlaw80',
-  },
-  {
-    id: 5,
-    imgSrc: '/egg_princess.png',
-    userName: 'easlaw80',
-  },
-  {
-    id: 6,
-    imgSrc: '/egg_princess.png',
-    userName: 'easlaw80',
-  },
-  {
-    id: 7,
-    imgSrc: '/egg_princess.png',
-    userName: 'easlaw80',
-  },
-];
+import { flexBetween, flexColumn, flexStart } from '@/_styles/reusableStyle';
 
 interface ISelectedRadioTypesProps {
   isNoAll: boolean;
+  listLength: number;
   selectedUser: number[];
   /**
    * _allSelected 앞에 __를 붙인 이유:
@@ -64,13 +26,14 @@ interface ISelectedRadioTypesProps {
   selectAllUsersHandler: (_allSelected: boolean) => void;
 }
 interface UserInfo {
+  id: number;
   avatar_url: string;
   login: string;
 }
 
 /** 모두 선택 / 모두 해지 선택하는 radio 부분 */
-const SelectRadio = ({ isNoAll, selectedUser, selectAllUsersHandler }: ISelectedRadioTypesProps) => {
-  const allSelected = selectedUser.length === DUMMY_DATA.length;
+const SelectRadio = ({ isNoAll, listLength, selectedUser, selectAllUsersHandler }: ISelectedRadioTypesProps) => {
+  const allSelected = selectedUser.length === listLength;
 
   return (
     <div css={buttons}>
@@ -93,23 +56,20 @@ interface FollowListPropTypes {
   listType: ListType;
 }
 
+type ListTypes = {
+  login: string;
+  avatar_url: string;
+  id: number;
+};
+
 interface IFollowerDataTypesProps {
+  list: ListTypes[];
   selectedUser: number[];
   selectUsersHandler: (_isAdded: boolean, _userId: number) => void;
-  listType: ListType;
 }
 
 /** follower 목록 보여주는 부분 */
-const FollowerData = ({ selectedUser, selectUsersHandler, listType }: IFollowerDataTypesProps) => {
-  // const key: string = sessionStorage.getItem('token') ?? '';
-  // const username: string = sessionStorage.getItem('username') ?? '';
-  const searchParams = useSearchParams();
-
-  const key = searchParams.get('token') ?? '';
-  const username = searchParams.get('username') ?? '';
-
-  const list = useGetCoFollower(key, username, listType);
-
+const FollowerData = ({ list, selectedUser, selectUsersHandler }: IFollowerDataTypesProps) => {
   const selectUserHandler = (e: FormEvent<HTMLInputElement>) => {
     const userId = Number((e.target as HTMLInputElement).value);
 
@@ -118,16 +78,16 @@ const FollowerData = ({ selectedUser, selectUsersHandler, listType }: IFollowerD
 
   return (
     <ul css={followerList}>
-      {list?.map((user: UserInfo, index: number) => (
-        <S.FollowerItem key={index}>
-          <label css={followerInfo} htmlFor={`${user.login}`}>
-            <Image css={userImage} src={user.avatar_url} alt="user-profile-img" width={50} height={50} priority />
-            <span>{user.login}</span>
+      {list?.map(({ id, avatar_url, login }: UserInfo) => (
+        <S.FollowerItem key={`${avatar_url}-${login}`}>
+          <label css={followerInfo} htmlFor={`${login}`}>
+            <Image css={userImage} src={avatar_url} alt="user-profile-img" width={50} height={50} priority />
+            <span>{login}</span>
             <S.InputCheckBox
-              id={`${user.login}`}
+              id={`${login}`}
               type="checkbox"
-              value={`${user.login}`}
-              // checked={selectedUser.includes(user.login)}
+              value={id}
+              checked={selectedUser.includes(id)}
               onChange={selectUserHandler}
             />
           </label>
@@ -140,9 +100,17 @@ const FollowerData = ({ selectedUser, selectUsersHandler, listType }: IFollowerD
 const FollowerList = ({ isNoAll, listType }: FollowListPropTypes) => {
   const [selectedUser, setSelectedUsers] = useState<number[]>([]);
 
+  // const key: string = sessionStorage.getItem('token') ?? '';
+  // const username: string = sessionStorage.getItem('username') ?? '';
+  const searchParams = useSearchParams();
+  const key = searchParams.get('token') ?? '';
+  const username = searchParams.get('username') ?? '';
+  const list = useGetCoFollower(key, username, listType);
+  const listLength = list.length;
+
   /** 전체 선택 / 전체 해제 */
   const selectAllUsersHandler = (allSelected: boolean) => {
-    allSelected ? setSelectedUsers([]) : setSelectedUsers(DUMMY_DATA.map(({ id }) => id));
+    allSelected ? setSelectedUsers([]) : setSelectedUsers(list.map(({ id }: { id: number }) => id));
   };
 
   const selectUserHandler = (isAdded: boolean, userId: number) => {
@@ -154,8 +122,13 @@ const FollowerList = ({ isNoAll, listType }: FollowListPropTypes) => {
   return (
     <S.ListContainer>
       <form>
-        <SelectRadio isNoAll={isNoAll} selectedUser={selectedUser} selectAllUsersHandler={selectAllUsersHandler} />
-        <FollowerData selectedUser={selectedUser} selectUsersHandler={selectUserHandler} listType={listType} />
+        <SelectRadio
+          isNoAll={isNoAll}
+          listLength={listLength}
+          selectedUser={selectedUser}
+          selectAllUsersHandler={selectAllUsersHandler}
+        />
+        <FollowerData list={list} selectedUser={selectedUser} selectUsersHandler={selectUserHandler} />
       </form>
     </S.ListContainer>
   );
