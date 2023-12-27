@@ -36,10 +36,28 @@ interface ListTypeInterfaces {
 }
 /** 맞팔 아닌 사람 / 맞팔 확인하기 / 뒤로 가기 버튼 부분 */
 const ListButtons = ({ setListType }: ListTypeInterfaces) => {
+  const [isActive, setIsActive] = useState('all');
+
   return (
     <div css={followerButton}>
-      <Button onClick={() => setListType('nonFollowList')}>맞팔 아닌 사람</Button>
-      <Button onClick={() => setListType('coFollowList')}>맞팔 확인하기</Button>
+      <Button
+        isActive={isActive === 'all'}
+        onClick={() => {
+          setListType('nonFollowList');
+          setIsActive('no-all');
+        }}
+      >
+        맞팔 아닌 사람
+      </Button>
+      <Button
+        isActive={isActive === 'no-all'}
+        onClick={() => {
+          setListType('coFollowList');
+          setIsActive('all');
+        }}
+      >
+        맞팔 확인하기
+      </Button>
       <Button>
         <Link href="/">뒤로 가기</Link>
       </Button>
