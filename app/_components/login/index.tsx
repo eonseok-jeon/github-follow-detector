@@ -4,7 +4,7 @@
 
 import * as S from './style';
 
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import Button from '../common/Button';
 import { FormEvent } from 'react';
