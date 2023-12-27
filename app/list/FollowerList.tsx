@@ -33,11 +33,16 @@ interface UserInfo {
 
 /** 모두 선택 / 모두 해지 선택하는 radio 부분 */
 const SelectRadio = ({ isNoAll, listLength, selectedUser, selectAllUsersHandler }: ISelectedRadioTypesProps) => {
-  const allSelected = selectedUser.length === listLength;
+  const selectedUserLength = selectedUser.length;
+  const allSelected = selectedUserLength === listLength;
 
   return (
     <div css={buttons}>
-      {isNoAll && <Button type="submit">맞팔하기</Button>}
+      {isNoAll && (
+        <Button type="submit" disabled={selectedUserLength === 0}>
+          맞팔하기
+        </Button>
+      )}
       <S.SelectAllButton
         type="button"
         onClick={() => {
@@ -106,7 +111,7 @@ const FollowerList = ({ isNoAll, listType }: FollowListPropTypes) => {
   const key = searchParams.get('token') ?? '';
   const username = searchParams.get('username') ?? '';
   const list = useGetCoFollower(key, username, listType);
-  const listLength = list.length;
+  const listLength = list?.length;
 
   /** 전체 선택 / 전체 해제 */
   const selectAllUsersHandler = (allSelected: boolean) => {
