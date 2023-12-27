@@ -5,7 +5,7 @@ import * as S from './style';
 import { FormEvent, useState } from 'react';
 import Image from 'next/image';
 import { css } from '@emotion/react';
-import useGetCoFollower from 'hooks/useCoFollower';
+import useGetCoFollower from '@/_hooks/useCoFollower';
 import { useSearchParams } from 'next/navigation';
 import Button from '@/_components/common/Button';
 import { flexBetween, flexColumn, flexStart } from '@/_styles/reusableStyle';

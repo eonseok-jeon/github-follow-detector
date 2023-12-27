@@ -1,4 +1,4 @@
-import { getFollower, getFollowing } from 'apis/getFollow';
+import { getFollower, getFollowing } from '@/_apis/getFollow';
 
 import { useQuery } from '@tanstack/react-query';
 
