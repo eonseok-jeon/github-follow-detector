@@ -1,3 +1,4 @@
+import { CommonButton } from '@/_components/common/Button/style';
 import { CommonContainer } from '@/_components/common/Container/style';
 import { flexStart } from '@/_styles/reusableStyle';
 import styled from '@emotion/styled';
@@ -10,16 +11,15 @@ const MyInfoContainer = styled(CommonContainer)`
 `;
 
 const SelectAllButton = styled.button`
-  position: relative;
-  display: block;
+  height: 4rem;
   padding: 1rem;
   margin-left: auto;
-  margin-bottom: 2rem;
   border: 1px solid black;
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.3s ease;
   font-size: 1.2rem;
+
   &:hover {
     background-color: ${({ theme }) => theme.colors.lightGrey};
   }
@@ -72,4 +72,8 @@ const FollowerItem = styled.li`
   }
 `;
 
-export { MyInfoContainer, SelectAllButton, InputCheckBox, ListContainer, FollowerItem };
+const SubmitButton = styled(CommonButton)`
+  display: inline-block;
+`;
+
+export { MyInfoContainer, SelectAllButton, InputCheckBox, ListContainer, FollowerItem, SubmitButton };

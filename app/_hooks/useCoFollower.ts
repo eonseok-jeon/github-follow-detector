@@ -1,4 +1,4 @@
-import { getFollower, getFollowing } from 'apis/getFollow';
+import { getFollower, getFollowing } from '@/_apis/getFollow';
 
 import { useQuery } from '@tanstack/react-query';
 
@@ -41,9 +41,6 @@ const useGetCoFollower = (pat: string, username: string, type: string) => {
     return following;
   });
 
-  console.log(follwerInfoList);
-  console.log(followingInfoList);
-
   // 왜 안되는지.. 모르겠습니다
   // const nonFollowingList =
   //   follwerInfoList &&
@@ -57,7 +54,6 @@ const useGetCoFollower = (pat: string, username: string, type: string) => {
   const nonFollowList = follwerInfoList?.filter((item1: UserInfo2) => !followingInfoLogin?.has(item1.login));
 
   const coFollowList = follwerInfoList?.filter((item1: UserInfo2) => followingInfoLogin?.has(item1.login));
-  console.log(coFollowList);
   if (type === 'coFollowList') {
     return coFollowList;
   } else if (type === 'nonFollowList') {
