@@ -3,12 +3,13 @@
 import * as S from './style';
 
 import { FormEvent, useState } from 'react';
-import { flexColumn, flexStart } from '@/_styles/reusableStyle';
+import { flexBetween, flexColumn, flexStart } from '@/_styles/reusableStyle';
 
 import Image from 'next/image';
 import { css } from '@emotion/react';
 import useGetCoFollower from 'hooks/useCoFollower';
 import { useSearchParams } from 'next/navigation';
+import Button from '@/_components/common/Button';
 
 const DUMMY_DATA = [
   {
@@ -49,6 +50,7 @@ const DUMMY_DATA = [
 ];
 
 interface ISelectedRadioTypesProps {
+  isNoAll: boolean;
   selectedUser: number[];
   /**
    * _allSelected 앞에 __를 붙인 이유:
@@ -67,23 +69,27 @@ interface UserInfo {
 }
 
 /** 모두 선택 / 모두 해지 선택하는 radio 부분 */
-const SelectRadio = ({ selectedUser, selectAllUsersHandler }: ISelectedRadioTypesProps) => {
+const SelectRadio = ({ isNoAll, selectedUser, selectAllUsersHandler }: ISelectedRadioTypesProps) => {
   const allSelected = selectedUser.length === DUMMY_DATA.length;
 
   return (
-    <S.SelectAllButton
-      type="button"
-      onClick={() => {
-        selectAllUsersHandler(allSelected);
-      }}
-    >
-      {allSelected ? '모두 해제' : '모두 선택'}
-    </S.SelectAllButton>
+    <div css={buttons}>
+      {isNoAll && <Button type="submit">맞팔하기</Button>}
+      <S.SelectAllButton
+        type="button"
+        onClick={() => {
+          selectAllUsersHandler(allSelected);
+        }}
+      >
+        {allSelected ? '모두 해제' : '모두 선택'}
+      </S.SelectAllButton>
+    </div>
   );
 };
 type ListType = 'coFollowList' | 'nonFollowList' | '';
 
 interface FollowListPropTypes {
+  isNoAll: boolean;
   listType: ListType;
 }
 
@@ -131,7 +137,7 @@ const FollowerData = ({ selectedUser, selectUsersHandler, listType }: IFollowerD
   );
 };
 
-const FollowerList = ({ listType }: FollowListPropTypes) => {
+const FollowerList = ({ isNoAll, listType }: FollowListPropTypes) => {
   const [selectedUser, setSelectedUsers] = useState<number[]>([]);
 
   /** 전체 선택 / 전체 해제 */
@@ -147,13 +153,21 @@ const FollowerList = ({ listType }: FollowListPropTypes) => {
 
   return (
     <S.ListContainer>
-      <SelectRadio selectedUser={selectedUser} selectAllUsersHandler={selectAllUsersHandler} />
-      <FollowerData selectedUser={selectedUser} selectUsersHandler={selectUserHandler} listType={listType} />
+      <form>
+        <SelectRadio isNoAll={isNoAll} selectedUser={selectedUser} selectAllUsersHandler={selectAllUsersHandler} />
+        <FollowerData selectedUser={selectedUser} selectUsersHandler={selectUserHandler} listType={listType} />
+      </form>
     </S.ListContainer>
   );
 };
 
 export default FollowerList;
+
+const buttons = css`
+  ${flexBetween}
+
+  margin-bottom: 2rem;
+`;
 
 const followerList = css`
   ${flexColumn}
